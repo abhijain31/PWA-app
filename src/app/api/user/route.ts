@@ -4,12 +4,16 @@ import { NextResponse } from 'next/server';
 
 
 export async function GET() {
-  const todos = await prisma.todo.findMany();
-  return NextResponse.json(todos);
+  const user = await prisma.user.create({data: {
+    email: "abhi@gmail.com",
+    name: "Abhi Jain"
+  }})
+  return NextResponse.json(user);
 }
 
 export async function POST(req: Request) {
   const data = await req.json();
+  console.log(JSON.stringify(data))
   const todo = await prisma.todo.create({
     data: {
       title: data.title,
