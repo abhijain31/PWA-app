@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // You can use PostgreSQL if needed
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  todos     Todo[]
+  tasks     Task[]
+  events    Event[]
+  reminders Reminder[]
+}
+
+model Todo {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime
+  isComplete  Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime
+  priority    Int
+  isComplete  Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  location    String?
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model Reminder {
+  id        String   @id @default(uuid())
+  message   String
+  remindAt  DateTime
+  status    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
